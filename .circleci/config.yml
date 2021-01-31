@@ -1,15 +1,15 @@
-version: 2.1
-orbs:
-  ruby: circleci/ruby@0.1.2 
-
+# ~/.circleci/config.yml
+version: 2
 jobs:
-  build:
+  test:
     docker:
-      - image: circleci/ruby:2.6.3-stretch-node
-    executor: ruby/default
+      - image: circleci/<language>:<version TAG>
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    parallelism: 4
     steps:
-      - checkout
       - run:
-          name: Which bundler?
-          command: bundle -v
-      - ruby/bundle-install
+          command: |
+            echo $(circleci tests glob "foo/**/*" "bar/**/*")
+            circleci tests glob "foo/**/*" "bar/**/*" | xargs -n 1 echo
