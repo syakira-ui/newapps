@@ -1,15 +1,9 @@
-# ~/.circleci/config.yml
-version: 2
+version: 2.1
 jobs:
-  test:
-    docker:
-      - image: circleci/<language>:<version TAG>
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+  build:
+    docker: 
+      - image: cimg/node:14.10.1 
     parallelism: 4
     steps:
-      - run:
-          command: |
-            echo $(circleci tests glob "foo/**/*" "bar/**/*")
-            circleci tests glob "foo/**/*" "bar/**/*" | xargs -n 1 echo
+      - checkout # check out the code in the project directory
+      - run: echo "hello world" # run the `echo` command
